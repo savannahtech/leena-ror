@@ -4,7 +4,9 @@ class User < ApplicationRecord
 
   def current_month_hits
     # Cache the count of hits
-    @current_month_hits ||= hits.where('created_at > ?', Time.current.beginning_of_month).count
+    @current_month_hits ||= Time.use_zone(time_zone) do
+			       hits.where('created_at > ?', Time.current.beginning_of_month).count
+			     end
   end
 end
 # Use memoization to cache the instance variable
